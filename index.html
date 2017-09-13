@@ -30,7 +30,7 @@
       <div class="col-md-12 upload_form">
         <input type="file" id="imageLoader" name="imageLoader" value="A1.png" />
         <button type="button" onclick="download_image()" name="button">Save .png</button>
-        <button type="button" onclick="createSCAD()" name="button">Create .SCAD</button>
+        <button type="button" onclick="createSCAD()" name="button">Create .scad</button>
       </div>
     </div>
     <div class=row>
@@ -245,7 +245,7 @@
     for (var i = 2; i < Pts.length; i++) {
       // fileContent += Pts[i + 1].name;
       if (i % 2 == 0) {
-        fileContent += Pts[i + 1].name + " = " + Pts[i + 1].dist + "\r\n";
+        fileContent += Pts[i + 1].name + " = " + Pts[i + 1].dist + ";\r\n";
       }
     }
     var file = new File([fileContent], "file.scad", {
