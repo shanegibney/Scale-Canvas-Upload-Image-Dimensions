@@ -6,42 +6,23 @@
   <title></title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
-  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" crossorigin="anonymous"> -->
-  <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" crossorigin="anonymous"></script> -->
   <script src="https://rawgit.com/eligrey/FileSaver.js/master/FileSaver.js"></script>
   <script src="https://rawgit.com/eligrey/canvas-toBlob.js/master/canvas-toBlob.js"></script>
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/mootools/1.6.0/mootools-core.min.js"></script> -->
 </head>
 <style>
-  canvas {
+  /*canvas {
     border-width: 100%;
-    /*border: black 3px solid;*/
-  }
-
-  #dimensions {
+    border: black 3px solid;
+  }*/
+  /*#dimensions {
     background-color: lightblue;
     border: lightgray 3px solid;
-  }
+  }*/
 </style>
 
 <body>
-
-
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <!-- <a class="navbar-brand" href="#">Navbar</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button> -->
-
-    <!-- <div class="collapse navbar-collapse" id="navbarSupportedContent"> -->
-
-    <!-- <ul class="navbar-nav mr-auto"> -->
     <ul class="nav nav-tabs">
-
-      <!-- <li class="nav-item active">
-        <a class="nav-link" href="https://shanegibney.github.io/Scale-Canvas-Upload-Image-Dimensions/">Home <span class="sr-only">(current)</span></a>
-      </li> -->
       <li class="nav-item">
         <a class="nav-link active" href="https://shanegibney.github.io/Scale-Canvas-Upload-Image-Dimensions/">Home</a>
       </li>
@@ -50,27 +31,26 @@
         <div class="dropdown-menu">
           <a class="dropdown-item" onclick="download_image()" href="#">.png</a>
           <a class="dropdown-item" onclick="createSCAD()" href="#">.scad</a>
-          <!-- <a class="dropdown-item" onclick="createTXT()" href="#">.txt</a> -->
         </div>
       </li>
       <li>
-        <form class="form-inline my-2 my-lg-0">
-          <input type="file" id="input" onchange="handleFiles(this.files)">
-        </form>
+        <div class="form-group">
+          <input type="file" class="form-control-file" id="input" aria-describedby="fileHelp">
+        </div>
       </li>
-      <!-- <li class="nav-item">
-      <a class="nav-link" href="https://shanegibney.github.io/Scale-Canvas-Upload-Image-Dimensions/">Link</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link disabled" href="#">Disabled</a>
-    </li> -->
     </ul>
   </nav>
 
   <div class="container-fluid">
     <div class=row>
-      <div class="col-md-2" id="dimensions">
-        <h5>Dimensions:</h5>
+      <div class="col-md-2">
+        <!-- <h5>Dimensions:</h5> -->
+        <div class="alert alert-success" role="alert">
+          <h4 class="alert-heading">Dimensions</h4>
+          <div id="dimensions">
+
+          </div>
+        </div>
       </div>
       <div class="col-md-10">
         <canvas id="canvas"></canvas>
@@ -116,35 +96,31 @@
   // });
 
 
-  // window.addEventListener('load', function() {
   // var selectedFile = document.getElementById('input').files[0];
 
   var inputElement = document.getElementById("input");
   inputElement.addEventListener("change", handleFiles, false);
+  var c = document.getElementById('canvas');
+  var ctx = c.getContext('2d');
 
-  function handleFiles() {
+  function handleFiles(e) {
     console.log("running handleFiles()");
     var fileList = this.files; /* now you can work with the file list */
+    // }
+    //
+    // function handleImage(e) {
+    var reader = new FileReader();
+    reader.onload = function(event) {
+      var img = new Image();
+      img.onload = function() {
+        c.width = img.width;
+        c.height = img.height;
+        ctx.drawImage(img, 0, 0);
+      }
+      img.src = event.target.result;
+    }
+    reader.readAsDataURL(e.target.files[0]);
   }
-  // var imageLoader = document.getElementById('imageLoader');
-  // imageLoader.addEventListener('change', handleImage, false);
-  // var c = document.getElementById('canvas');
-  // var ctx = c.getContext('2d');
-  //
-  // function handleImage(e) {
-  //   var reader = new FileReader();
-  //   reader.onload = function(event) {
-  //     var img = new Image();
-  //     img.onload = function() {
-  //       c.width = img.width;
-  //       c.height = img.height;
-  //       ctx.drawImage(img, 0, 0);
-  //     }
-  //     img.src = event.target.result;
-  //   }
-  //   reader.readAsDataURL(e.target.files[0]);
-  // }
-
 
   // immediately invoked function
   (function() {
@@ -154,37 +130,8 @@
     });
   })();
 
-
-  // });
-
-  // window.addEventListener('load', function() {
-  //   var imageLoader = document.getElementById('imageLoader');
-  //   imageLoader.addEventListener('change', handleImage, false);
-  //   var c = document.getElementById('canvas');
-  //   var ctx = c.getContext('2d');
-  //
-  //   function handleImage(e) {
-  //     var reader = new FileReader();
-  //     reader.onload = function(event) {
-  //       var img = new Image();
-  //       img.onload = function() {
-  //         c.width = img.width;
-  //         c.height = img.height;
-  //         ctx.drawImage(img, 0, 0);
-  //       }
-  //       img.src = event.target.result;
-  //     }
-  //     reader.readAsDataURL(e.target.files[0]);
-  //   }
-  //
-  //   $("#canvas").click(function(e) {
-  //     getPosition(e);
-  //   });
-  // });
-
   var pointSize = 3;
 
-  // Event will be a click event which can be retrieved as first parameter in the addEventListener(function(event){}); or in jQuery with $("selector").click(function(event){});
   function getPosition(event) {
     console.log("running getPosition()");
     var rect = canvas.getBoundingClientRect();
@@ -195,11 +142,6 @@
       x: x,
       y: y
     });
-
-    // if (Pts.length == 2) {
-    //   dist = getDistance();
-    //   addInput(Pts[1].x, Pts[1].y);
-    // }
 
     drawCoordinates(x, y);
 
@@ -237,13 +179,6 @@
       ctx.strokeStyle = 'black';
     }
     ctx.stroke();
-    // dist = getDistance();
-    // txt = dist * ratio;
-
-    // if (Pts.length > 2) {
-    //   txt = Pts[Pts.length - 3].name + " = " + dist;
-    //   drawText(txt, x1, y1, x2, y2);
-    // }
   }
 
   function addInput(x, y) {
@@ -265,12 +200,6 @@
     document.body.appendChild(input);
     input.focus();
     hasInput = true;
-
-    // var itemLabel = document.createElement('Label');
-    // itemLabel.setAttribute('for', item);
-    // itemLabel.innerHTML = 'Item: ';
-    // newDiv.insertBefore(itemLabel, item);
-    // drawLine(Pts[Pts.length - 2].x, Pts[Pts.length - 2].y, Pts[Pts.length - 1].x, Pts[Pts.length - 1].y);
   }
 
   function handleEnter(e) {
@@ -282,9 +211,6 @@
       Pts[Pts.length - 1].dist = (ratio * dist).toFixed(2);
       document.body.removeChild(this);
       hasInput = false;
-      // if (Pts.length > 2) {
-      // ratio = inputValue / dist; // ratio only set once
-      // drawText("reference line = " + dist * ratio, Pts[Pts.length - 2].x, Pts[Pts.length - 2].y, Pts[Pts.length - 1].x, Pts[Pts.length - 1].y);
 
       updateObject(); // add variable or line name to object
       console.log("name: " + Pts[Pts.length - 1].name);
@@ -349,9 +275,9 @@
   function createSCAD() {
     var fileContent = "";
     for (var i = 2; i < Pts.length; i++) {
-      // fileContent += Pts[i + 1].name;
       if (i % 2 == 0) {
         fileContent += Pts[i + 1].name + " = " + Pts[i + 1].dist + ";\r\n";
+        console.log(Pts[i + 1].name + " = " + Pts[i + 1].dist);
       }
     }
     var file = new File([fileContent], "file.scad", {
@@ -371,17 +297,6 @@
     }, "image/png");
   };
 </script>
-
-<!-- Latest compiled and minified CSS -->
-<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
-
-<!-- Optional theme -->
-<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"> -->
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
-
-<!-- Latest compiled and minified JavaScript -->
-<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script> -->
-<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" crossorigin="anonymous"></script> -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
