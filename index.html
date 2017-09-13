@@ -66,38 +66,6 @@
   var angle;
   var var_name;
 
-  // function el(id) {
-  //   return document.getElementById(id);
-  // } // Get elem by ID
-  //
-  // var canvas = el("canvas");
-  // var context = canvas.getContext("2d");
-  // var c = document.getElementById('canvas');
-  //
-  // function readImage() {
-  //   if (this.files && this.files[0]) {
-  //     var FR = new FileReader();
-  //     FR.onload = function(e) {
-  //       var img = new Image();
-  //       img.addEventListener("load", function() {
-  //         c.width = img.width;
-  //         c.height = img.height;
-  //         context.drawImage(img, 0, 0);
-  //       });
-  //       img.src = e.target.result;
-  //     };
-  //     FR.readAsDataURL(this.files[0]);
-  //   }
-  // }
-  //
-  // el("fileUpload").addEventListener("change", readImage, false);
-  // $("#canvas").click(function(e) {
-  //   getPosition(e);
-  // });
-
-
-  // var selectedFile = document.getElementById('input').files[0];
-
   var inputElement = document.getElementById("input");
   inputElement.addEventListener("change", handleFiles, false);
   var c = document.getElementById('canvas');
@@ -106,8 +74,7 @@
   function handleFiles(e) {
     console.log("running handleFiles()");
     var fileList = this.files; /* now you can work with the file list */
-    // }
-    //
+
     // function handleImage(e) {
     var reader = new FileReader();
     reader.onload = function(event) {
@@ -142,7 +109,7 @@
       x: x,
       y: y
     });
-
+    console.log("Pts.length = " + Pts.length);
     drawCoordinates(x, y);
 
     // Every time an even number of points created
@@ -206,6 +173,8 @@
     console.log("running handleEnter()");
     var keyCode = e.keyCode;
     if (keyCode === 13) {
+      getDistance();
+
       inputValue = this.value; // input ratio or variable name
       Pts[Pts.length - 1].name = this.value;
       Pts[Pts.length - 1].dist = (ratio * dist).toFixed(2);
@@ -215,7 +184,7 @@
       updateObject(); // add variable or line name to object
       console.log("name: " + Pts[Pts.length - 1].name);
       console.log(Pts);
-      getDistance();
+      // getDistance();
       console.log("Dist: " + dist);
 
       if (Pts.length == 2) {
@@ -242,10 +211,13 @@
   }
 
   function updateObject() {
-    console.log("running updateObject()");
+    console.log("running updateObject(), Pts.length = " + Pts.length);
     if (Pts.length > 2) {
       console.log("length: " + Pts.length);
       Pts[Pts.length - 1].name = inputValue;
+      for (i = 0; i < Pts.length; i++) {
+        console.log("updateObject(): i = " + i + ", Pts[i].name = " + Pts[i].name + ", Pts[i].dist = " + Pts[i].dist);
+      }
     }
   }
 
@@ -273,13 +245,16 @@
   }
 
   function createSCAD() {
+    // for (i = 0; i < Pts.length; i++) {
+    //   console.log("creatSCAD(): i = " + i + ", Pts[i].name = " + Pts[i].name + ", Pts[i].dist = " + Pts[i].dist);
+    // }
     var fileContent = "";
-    for (var i = 2; i < Pts.length; i += 2) {
-      if (i % 2 == 0) {
-        fileContent += Pts[i + 1].name + " = " + Pts[i + 3].dist + ";\r\n";
-        console.log(Pts[i + 1].name + " = " + Pts[i + 3].dist);
-        console.log("i = " + i);
-      }
+    for (var i = 3; i < Pts.length; i += 2) {
+      // if (i % 2 == 0) {
+      console.log("I = " + i);
+      fileContent += Pts[i].name + " = " + Pts[i].dist + ";\r\n";
+      console.log("FORLOOP: i = " + i + ", Pts[i].name = " + Pts[i].name + ", Pts[i].dist = " + Pts[i].dist);
+      // }
     }
     var file = new File([fileContent], "file.scad", {
       type: "text/plain;charset=utf-8"
