@@ -27,10 +27,11 @@
         <a class="nav-link active" href="https://shanegibney.github.io/Scale-Canvas-Upload-Image-Dimensions/">Home</a>
       </li>
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Save As</a>
+        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Save as</a>
         <div class="dropdown-menu">
           <a class="dropdown-item" onclick="download_image()" href="#">.png</a>
           <a class="dropdown-item" onclick="createSCAD()" href="#">.scad</a>
+          <a class="dropdown-item" onclick="createtxt()" href="#">.txt</a>
         </div>
       </li>
       <li>
@@ -245,18 +246,22 @@
   }
 
   function createSCAD() {
-    // for (i = 0; i < Pts.length; i++) {
-    //   console.log("creatSCAD(): i = " + i + ", Pts[i].name = " + Pts[i].name + ", Pts[i].dist = " + Pts[i].dist);
-    // }
     var fileContent = "";
     for (var i = 3; i < Pts.length; i += 2) {
-      // if (i % 2 == 0) {
-      console.log("I = " + i);
       fileContent += Pts[i].name + " = " + Pts[i].dist + ";\r\n";
-      console.log("FORLOOP: i = " + i + ", Pts[i].name = " + Pts[i].name + ", Pts[i].dist = " + Pts[i].dist);
-      // }
     }
     var file = new File([fileContent], "file.scad", {
+      type: "text/plain;charset=utf-8"
+    });
+    saveAs(file);
+  }
+
+  function createtxt() {
+    var fileContent = "";
+    for (var i = 3; i < Pts.length; i += 2) {
+      fileContent += Pts[i].name + " = " + Pts[i].dist + "\r\n";
+    }
+    var file = new File([fileContent], "file.txt", {
       type: "text/plain;charset=utf-8"
     });
     saveAs(file);

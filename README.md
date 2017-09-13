@@ -9,4 +9,4 @@ gh-pages [demo](https://shanegibney.github.io/Scale-Canvas-Upload-Image-Dimensio
 * Again mark any two points and the distance will be displayed
 * Save the canvas as a .png image
 
-<img width="910" alt="screen shot 2017-09-12 at 00 29 00" src="https://user-images.githubusercontent.com/17167992/30301241-80f00c24-9751-11e7-891c-e01a63fbdaf0.png">
+<img width="1340" alt="screen shot 2017-09-13 at 19 50 57" src="https://user-images.githubusercontent.com/17167992/30396724-7ae98626-98c2-11e7-97f0-3621bf32e7ba.png">
