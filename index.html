@@ -15,7 +15,12 @@
 <style>
   canvas {
     border-width: 100%;
-    border: black 3px solid;
+    /*border: black 3px solid;*/
+  }
+
+  #dimensions {
+    background-color: lightblue;
+    border: lightgray 3px solid;
   }
 </style>
 
@@ -23,13 +28,14 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12 upload_form">
-        <input type="file" id="imageLoader" name="imageLoader" />
-        <button type="button" onclick="download_image()" name="button">Save as .png file</button>
+        <input type="file" id="imageLoader" name="imageLoader" value="A1.png" />
+        <button type="button" onclick="download_image()" name="button">Save .png</button>
+        <button type="button" onclick="createSCAD()" name="button">Create .SCAD</button>
       </div>
     </div>
     <div class=row>
       <div class="col-md-2" id="dimensions">
-        hiya!
+        <h5>Dimensions:</h5>
       </div>
       <div class="col-md-10">
         <canvas id="canvas"></canvas>
@@ -136,11 +142,16 @@
 
   function addInput(x, y) {
     console.log("running addInput()");
-    var newDiv = document.createElement('div');
+    // var newDiv = document.createElement('div');
 
     var input = document.createElement('input');
     input.type = 'text';
     input.name = 'item';
+    if (Pts.length == 2) {
+      input.placeholder = "reference distance";
+    } else {
+      input.placeholder = "dimension name"
+    }
     input.style.position = 'fixed';
     input.style.left = (x + 4) + 'px';
     input.style.top = (y + 4) + 'px';
@@ -149,10 +160,10 @@
     input.focus();
     hasInput = true;
 
-    var itemLabel = document.createElement('Label');
-    itemLabel.setAttribute('for', item);
-    itemLabel.innerHTML = 'Item: ';
-    newDiv.insertBefore(itemLabel, item);
+    // var itemLabel = document.createElement('Label');
+    // itemLabel.setAttribute('for', item);
+    // itemLabel.innerHTML = 'Item: ';
+    // newDiv.insertBefore(itemLabel, item);
     // drawLine(Pts[Pts.length - 2].x, Pts[Pts.length - 2].y, Pts[Pts.length - 1].x, Pts[Pts.length - 1].y);
   }
 
@@ -162,7 +173,7 @@
     if (keyCode === 13) {
       inputValue = this.value; // input ratio or variable name
       Pts[Pts.length - 1].name = this.value;
-      Pts[Pts.length - 1].dist = dist;
+      Pts[Pts.length - 1].dist = (ratio * dist).toFixed(2);
       document.body.removeChild(this);
       hasInput = false;
       // if (Pts.length > 2) {
@@ -224,14 +235,23 @@
     ctx.restore();
     ctx.textBaseline = 'top';
     ctx.textAlign = 'left';
-    ctx.fillText(txt, 100, Pts.length * 10);
-    labels = document.getElementById("dimensions");
-    labels.innerHTML("blah");
+    ctx.fillText(txt, 10, Pts.length * 7);
+    old_html = document.getElementById("dimensions").innerHTML;
+    document.getElementById("dimensions").innerHTML = old_html + "<br>" + txt;
   }
 
   function createSCAD() {
-    // will convert Pts object to .scad file
-    // use filesaver.js
+    var fileContent = "";
+    for (var i = 2; i < Pts.length; i++) {
+      // fileContent += Pts[i + 1].name;
+      if (i % 2 == 0) {
+        fileContent += Pts[i + 1].name + " = " + Pts[i + 1].dist + "\r\n";
+      }
+    }
+    var file = new File([fileContent], "file.scad", {
+      type: "text/plain;charset=utf-8"
+    });
+    saveAs(file);
   }
 
   function download_image() {
