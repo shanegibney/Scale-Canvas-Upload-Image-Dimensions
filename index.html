@@ -11,6 +11,7 @@
   <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" crossorigin="anonymous"></script> -->
   <script src="https://rawgit.com/eligrey/FileSaver.js/master/FileSaver.js"></script>
   <script src="https://rawgit.com/eligrey/canvas-toBlob.js/master/canvas-toBlob.js"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/mootools/1.6.0/mootools-core.min.js"></script> -->
 </head>
 <style>
   canvas {
@@ -25,14 +26,48 @@
 </style>
 
 <body>
+
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <!-- <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button> -->
+
+    <!-- <div class="collapse navbar-collapse" id="navbarSupportedContent"> -->
+
+    <!-- <ul class="navbar-nav mr-auto"> -->
+    <ul class="nav nav-tabs">
+
+      <!-- <li class="nav-item active">
+        <a class="nav-link" href="https://shanegibney.github.io/Scale-Canvas-Upload-Image-Dimensions/">Home <span class="sr-only">(current)</span></a>
+      </li> -->
+      <li class="nav-item">
+        <a class="nav-link active" href="https://shanegibney.github.io/Scale-Canvas-Upload-Image-Dimensions/">Home</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Save As</a>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" onclick="download_image()" href="#">.png</a>
+          <a class="dropdown-item" onclick="createSCAD()" href="#">.scad</a>
+          <!-- <a class="dropdown-item" onclick="createTXT()" href="#">.txt</a> -->
+        </div>
+      </li>
+      <li>
+        <form class="form-inline my-2 my-lg-0">
+          <input type="file" id="input" onchange="handleFiles(this.files)">
+        </form>
+      </li>
+      <!-- <li class="nav-item">
+      <a class="nav-link" href="https://shanegibney.github.io/Scale-Canvas-Upload-Image-Dimensions/">Link</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link disabled" href="#">Disabled</a>
+    </li> -->
+    </ul>
+  </nav>
+
   <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-12 upload_form">
-        <input type="file" id="imageLoader" name="imageLoader" value="A1.png" />
-        <button type="button" onclick="download_image()" name="button">Save .png</button>
-        <button type="button" onclick="createSCAD()" name="button">Create .scad</button>
-      </div>
-    </div>
     <div class=row>
       <div class="col-md-2" id="dimensions">
         <h5>Dimensions:</h5>
@@ -51,30 +86,101 @@
   var angle;
   var var_name;
 
-  window.addEventListener('load', function() {
-    var imageLoader = document.getElementById('imageLoader');
-    imageLoader.addEventListener('change', handleImage, false);
-    var c = document.getElementById('canvas');
-    var ctx = c.getContext('2d');
+  // function el(id) {
+  //   return document.getElementById(id);
+  // } // Get elem by ID
+  //
+  // var canvas = el("canvas");
+  // var context = canvas.getContext("2d");
+  // var c = document.getElementById('canvas');
+  //
+  // function readImage() {
+  //   if (this.files && this.files[0]) {
+  //     var FR = new FileReader();
+  //     FR.onload = function(e) {
+  //       var img = new Image();
+  //       img.addEventListener("load", function() {
+  //         c.width = img.width;
+  //         c.height = img.height;
+  //         context.drawImage(img, 0, 0);
+  //       });
+  //       img.src = e.target.result;
+  //     };
+  //     FR.readAsDataURL(this.files[0]);
+  //   }
+  // }
+  //
+  // el("fileUpload").addEventListener("change", readImage, false);
+  // $("#canvas").click(function(e) {
+  //   getPosition(e);
+  // });
 
-    function handleImage(e) {
-      var reader = new FileReader();
-      reader.onload = function(event) {
-        var img = new Image();
-        img.onload = function() {
-          c.width = img.width;
-          c.height = img.height;
-          ctx.drawImage(img, 0, 0);
-        }
-        img.src = event.target.result;
-      }
-      reader.readAsDataURL(e.target.files[0]);
-    }
 
-    $("#canvas").click(function(e) {
+  // window.addEventListener('load', function() {
+  // var selectedFile = document.getElementById('input').files[0];
+
+  var inputElement = document.getElementById("input");
+  inputElement.addEventListener("change", handleFiles, false);
+
+  function handleFiles() {
+    console.log("running handleFiles()");
+    var fileList = this.files; /* now you can work with the file list */
+  }
+  // var imageLoader = document.getElementById('imageLoader');
+  // imageLoader.addEventListener('change', handleImage, false);
+  // var c = document.getElementById('canvas');
+  // var ctx = c.getContext('2d');
+  //
+  // function handleImage(e) {
+  //   var reader = new FileReader();
+  //   reader.onload = function(event) {
+  //     var img = new Image();
+  //     img.onload = function() {
+  //       c.width = img.width;
+  //       c.height = img.height;
+  //       ctx.drawImage(img, 0, 0);
+  //     }
+  //     img.src = event.target.result;
+  //   }
+  //   reader.readAsDataURL(e.target.files[0]);
+  // }
+
+
+  // immediately invoked function
+  (function() {
+    area = document.getElementById("canvas");
+    area.addEventListener("click", function(e) {
       getPosition(e);
     });
-  });
+  })();
+
+
+  // });
+
+  // window.addEventListener('load', function() {
+  //   var imageLoader = document.getElementById('imageLoader');
+  //   imageLoader.addEventListener('change', handleImage, false);
+  //   var c = document.getElementById('canvas');
+  //   var ctx = c.getContext('2d');
+  //
+  //   function handleImage(e) {
+  //     var reader = new FileReader();
+  //     reader.onload = function(event) {
+  //       var img = new Image();
+  //       img.onload = function() {
+  //         c.width = img.width;
+  //         c.height = img.height;
+  //         ctx.drawImage(img, 0, 0);
+  //       }
+  //       img.src = event.target.result;
+  //     }
+  //     reader.readAsDataURL(e.target.files[0]);
+  //   }
+  //
+  //   $("#canvas").click(function(e) {
+  //     getPosition(e);
+  //   });
+  // });
 
   var pointSize = 3;
 
@@ -274,6 +380,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 <!-- Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script> -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" crossorigin="anonymous"></script>
 
 </html>
