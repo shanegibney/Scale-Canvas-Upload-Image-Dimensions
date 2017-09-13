@@ -274,10 +274,11 @@
 
   function createSCAD() {
     var fileContent = "";
-    for (var i = 2; i < Pts.length; i++) {
+    for (var i = 2; i < Pts.length; i += 2) {
       if (i % 2 == 0) {
-        fileContent += Pts[i + 1].name + " = " + Pts[i + 1].dist + ";\r\n";
-        console.log(Pts[i + 1].name + " = " + Pts[i + 1].dist);
+        fileContent += Pts[i + 1].name + " = " + Pts[i + 3].dist + ";\r\n";
+        console.log(Pts[i + 1].name + " = " + Pts[i + 3].dist);
+        console.log("i = " + i);
       }
     }
     var file = new File([fileContent], "file.scad", {
