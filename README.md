@@ -12,6 +12,7 @@ How to use the tool:
 * Again mark any two points
 * And again an input box will appear. This time input a name for this dimension.
 * The name of this dimension and distance will appear both on the canvas and along the left side of the page.
+* You can also set constraint so that you can only draw either horizontal or vertical lines.
 * Using the 'Save as' dropdown menu, to save the canvas as a .png image
 * Or save as a .scad file of variables for [openSCAD](http://www.openscad.org/).
 * Or save as a .txt file of the variables for general use.
